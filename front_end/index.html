@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de IPs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="form-section">
+        <h2>Registro de Nomes</h2>
+        <div class="api-section">
+            <h2>Consulta via API</h2>
+            <button id="carregarDados">Carregar Dados</button>
+            <div id="apiResult"></div>
+        </div>
+
+        <form method="POST" action="/salvar_nome">
+            <div class="form-group">
+                <label for="nome">Seu Nome:</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
+            <button type="submit">Salvar</button>
+        </form>
+
+        <div class="info-box">
+            <p>Seu IP: <strong>{{ client_ip if client_ip else 'Não detectado' }}</strong></p>
+        </div>
+
+        {% if nome %}
+        <div class="success-message">
+            <p>Nome <strong>{{ nome }}</strong> salvo com sucesso!</p>
+        </div>
+        {% endif %}
+
+        <h3>Nomes Registrados:</h3>
+        <div class="nomes-list">
+            {% if nomes_ips %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>IP</th>
+                        <th>Data/Hora</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in nomes_ips %}
+                    <tr>
+                        <td>{{ item.nome }}</td>
+                        <td>{{ item.ip }}</td>
+                        <td>{{ item.data }}</td>
+                        <td><button class="remover-btn" data-ip="{{ item.ip }}">Remover</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>Nenhum nome registrado ainda.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
